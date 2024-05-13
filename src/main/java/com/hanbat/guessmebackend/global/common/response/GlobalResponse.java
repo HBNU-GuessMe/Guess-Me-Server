@@ -1,8 +1,8 @@
-package com.project.guessme.global.common.response;
+package com.hanbat.guessmebackend.global.common.response;
 
 import java.time.LocalDateTime;
 
-import com.project.guessme.global.error.ErrorResponse;
+import com.hanbat.guessmebackend.global.error.ErrorResponse;
 
 public record GlobalResponse(boolean success, int status, Object data, LocalDateTime timestamp) {
 	public static GlobalResponse success(int status, Object data) {

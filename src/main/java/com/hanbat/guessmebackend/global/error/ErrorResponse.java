@@ -1,4 +1,4 @@
-package com.project.guessme.global.error;
+package com.hanbat.guessmebackend.global.error;
 
 public record ErrorResponse(String errorClassName, String message) {
 
