@@ -76,4 +76,25 @@ public class KakaoLoginService {
 
 	}
 
+	/**
+	 *  카카오 사용자 정보 가져오기
+	 */
+
+	public KakaoUserInfo getUserInfo(String token) throws JsonProcessingException {
+
+		// 유저정보 GET 요청
+		WebClient webClient = WebClient.create(userInfoURL);
+		String response = webClient.get()
+			.uri(userInfoURL)
+			.header("Authorization", "Bearer "+ token)
+			.retrieve()
+			.bodyToMono(String.class)
+			.block();
+
+		log.info(response);
+		ObjectMapper objectMapper = new ObjectMapper();
+		JsonNode jsonNode = objectMapper.readTree(response);
+		log.info(jsonNode.asText());
+		return new KakaoUserInfo(jsonNode.get("id").asLong(), jsonNode.get("kakao_account").get("email").asText());
+	}
 }
