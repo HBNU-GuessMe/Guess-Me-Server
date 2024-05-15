@@ -6,11 +6,11 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class OauthUserInfo {
+public class OauthUserInfoResponse {
 	private Long id;
 	private String email;
 
-	public OauthUserInfo(Long id, String email) {
+	public OauthUserInfoResponse(Long id, String email) {
 		this.id = id;
 		this.email = email;
 
