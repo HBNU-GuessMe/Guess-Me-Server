@@ -3,14 +3,13 @@ package com.hanbat.guessmebackend.domain.login.kakao.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class KakaoToken {
+public class KakaoTokenResponse {
 
 	@JsonProperty("access_token")
 	private String accessToken;
@@ -31,7 +30,7 @@ public class KakaoToken {
 
 
 	@Builder
-	public KakaoToken(String accessToken, String refreshToken, int expiresIn, String tokenType, String scope) {
+	public KakaoTokenResponse(String accessToken, String refreshToken, int expiresIn, String tokenType, String scope) {
 		this.accessToken = accessToken;
 		this.refreshToken = refreshToken;
 		this.expiresIn = expiresIn;
