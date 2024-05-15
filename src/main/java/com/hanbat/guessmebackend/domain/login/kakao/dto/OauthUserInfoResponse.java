@@ -6,13 +6,13 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class KakaoUserInfo {
+public class OauthUserInfo {
 	private Long id;
-
 	private String email;
 
-	public KakaoUserInfo(Long id, String email) {
+	public OauthUserInfo(Long id, String email) {
 		this.id = id;
 		this.email = email;
+
 	}
 }
