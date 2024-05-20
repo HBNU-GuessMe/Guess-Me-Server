@@ -107,5 +107,33 @@ public class  KakaoLoginService {
 		return new OauthUserInfoResponse(jsonNode.get("id").asText());
 	}
 
+	/*
+	로그인한 사용자 회원가입
+ */
+	@Transactional
+	public UserInfoAndTokenResponse signup(String snsId) {
+		if (validateRegisteredUser(snsId)) {
+			User alreadyRegistedUser = userRepository.findBySnsId(snsId);
+			String accessToken = createJwtToken(alreadyRegistedUser.getId());
+			log.info(accessToken);
+			return UserInfoAndTokenResponse.fromUser(alreadyRegistedUser, accessToken);
+		}
+
+		User newUser = userRepository.save(new User(snsId, SnsType.KAKAO));
+		String accessToken = createJwtToken(newUser.getId());
+		return UserInfoAndTokenResponse.fromUser(newUser, accessToken);
+	}
+
+
+	/*
+		이미 있는 사용자있는 확인
+	 */
+	private Boolean validateRegisteredUser(String snsId) {
+		return userRepository.existsBySnsId(snsId);
+	}
+
+	private String createJwtToken(Long userId) {
+		return jwtUtil.generateToken(userId);
+	}
 
 }
