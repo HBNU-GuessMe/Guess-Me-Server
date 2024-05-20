@@ -19,16 +19,19 @@ import com.hanbat.guessmebackend.domain.login.kakao.dto.UserInfoAndTokenResponse
 import com.hanbat.guessmebackend.domain.user.entity.SnsType;
 import com.hanbat.guessmebackend.domain.user.entity.User;
 import com.hanbat.guessmebackend.domain.user.repository.UserRepository;
+import com.hanbat.guessmebackend.global.jwt.JwtUtil;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class KakaoLoginService {
+public class  KakaoLoginService {
 	private final UserRepository userRepository;
+	private final JwtUtil jwtUtil;
 
 	private final String reqURL = "https://kauth.kakao.com/oauth/token";
 	private final String userInfoURL = "https://kapi.kakao.com/v2/user/me";
@@ -45,6 +48,7 @@ public class KakaoLoginService {
 	/**
 	 * 인가코드를 카카오에 요청해 엑세스 토큰을 받는 함수
 	 */
+	@Deprecated
 	public KakaoTokenResponse getAccessToken(String code) throws IOException {
 		// 파라미터 세팅
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
@@ -84,6 +88,7 @@ public class KakaoLoginService {
 	/**
 	 *  카카오 사용자 정보 가져오기
 	 */
+	@Deprecated
 	public OauthUserInfoResponse getUserInfo(String token) throws JsonProcessingException {
 
 		// 유저정보 GET 요청
@@ -99,21 +104,8 @@ public class KakaoLoginService {
 		ObjectMapper objectMapper = new ObjectMapper();
 		JsonNode jsonNode = objectMapper.readTree(response);
 		log.info(jsonNode.asText());
-		return new OauthUserInfoResponse(jsonNode.get("id").asLong(), jsonNode.get("kakao_account").get("email").asText());
+		return new OauthUserInfoResponse(jsonNode.get("id").asText());
 	}
 
-	/*
-		로그인한 사용자 회원가입
-	 */
-	@Transactional
-	public UserInfoAndTokenResponse signup(String accessToken, String email) {
-		User user = userRepository.save(new User(email, SnsType.KAKAO));
-		return UserInfoAndTokenResponse.builder()
-			.userId(user.getId())
-			.email(email)
-			.snsType(user.getSnsType())
-			.accessToken(accessToken)
-			.build();
 
-	}
 }
