@@ -1,26 +1,18 @@
 package com.hanbat.guessmebackend.domain.login.kakao.dto;
 
 import com.hanbat.guessmebackend.domain.user.entity.SnsType;
+import com.hanbat.guessmebackend.domain.user.entity.User;
 
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class UserInfoAndTokenResponse {
-	private Long userId;
-	private String email;
-	private SnsType snsType;
-	private String accessToken;
 
-	@Builder
-	public UserInfoAndTokenResponse(Long userId, String email, SnsType snsType, String accessToken) {
-		this.userId = userId;
-		this.email = email;
-		this.snsType = snsType;
-		this.accessToken = accessToken;
+public record UserInfoAndTokenResponse (Long userId, String snsId, SnsType snsType, String accessToken) {
+
+	public static UserInfoAndTokenResponse fromUser(User user, String accessToken) {
+		return new UserInfoAndTokenResponse(user.getId(), user.getSnsId(), user.getSnsType(), accessToken);
 	}
 
 }
