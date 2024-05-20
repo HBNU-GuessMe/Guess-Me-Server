@@ -1,4 +1,4 @@
-package com.hanbat.guessmebackend.domain.entity;
+package com.hanbat.guessmebackend.domain.answer.entity;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
