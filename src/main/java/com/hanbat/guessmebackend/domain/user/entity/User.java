@@ -1,5 +1,6 @@
 package com.hanbat.guessmebackend.domain.user.entity;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import org.apache.commons.lang3.RandomStringUtils;
@@ -35,7 +36,7 @@ public class User extends BaseTimeEntity {
 	@JoinColumn(name = "family_id")
 	private Family family;
 
-	@Column(name = "sns_id", columnDefinition = "VARCHAR(45)", nullable = false)
+	@Column(name = "sns_id", columnDefinition = "VARCHAR(10)", nullable = false)
 	private String snsId;
 
 	@Enumerated(EnumType.STRING)
@@ -55,7 +56,7 @@ public class User extends BaseTimeEntity {
 	private Gender gender;
 
 	@Column(columnDefinition = "DATETIME")
-	private LocalDateTime birth;
+	private LocalDate birth;
 
 	@Column(columnDefinition = "TEXT")
 	private String interest;
@@ -63,30 +64,24 @@ public class User extends BaseTimeEntity {
 	@Column(columnDefinition = "TEXT")
 	private String worry;
 
-	@Builder(access = AccessLevel.PRIVATE)
-	private User (
-		Role role,
-		String nickname,
-		Gender gender,
-		LocalDateTime birth
-	) {
+	public User (String snsId, SnsType snsType) {
+		this.snsId = snsId;
+		this.snsType = snsType;
+	}
+
+	public void updateUserInfo(Role role, String nickname, Gender gender, LocalDate birth) {
 		this.role = role;
 		this.nickname = nickname;
 		this.gender = gender;
 		this.birth = birth;
 	}
 
-	public User (String snsId, SnsType snsType) {
-		this.snsId = snsId;
-		this.snsType = snsType;
-	}
-
-
 	// 랜덤 문자열을 만드는 작업을 서비스에서 할 필요가 없음 -> Entity 내에 만들거나 따로 클래스를 만들어줘야함
 	public void create() {
 		String userCode = RandomStringUtils.randomAlphanumeric(10);
 		this.userCode = userCode;
 	}
+
 
 
 

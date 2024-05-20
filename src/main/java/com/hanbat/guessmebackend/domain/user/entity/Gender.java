@@ -1,5 +1,7 @@
 package com.hanbat.guessmebackend.domain.user.entity;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -10,5 +12,6 @@ public enum Gender {
 	WOMAN("여"),
 	ELSE("기타");
 
+	@JsonValue
 	private final String value;
 }

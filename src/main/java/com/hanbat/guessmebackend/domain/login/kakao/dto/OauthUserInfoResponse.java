@@ -4,15 +4,14 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Deprecated
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class OauthUserInfoResponse {
-	private Long id;
-	private String email;
+	private String snsId;
 
-	public OauthUserInfoResponse(Long id, String email) {
-		this.id = id;
-		this.email = email;
+	public OauthUserInfoResponse(String snsId) {
+		this.snsId = snsId;
 
 	}
 }

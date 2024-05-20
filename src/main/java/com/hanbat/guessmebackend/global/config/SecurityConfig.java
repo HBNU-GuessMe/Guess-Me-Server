@@ -51,7 +51,7 @@ public class SecurityConfig {
 		// 로그인한 사용자만 접근 가능
 		http
 			.authorizeHttpRequests((auth) -> auth
-				.requestMatchers("/api/oauth/kakao/login", "/home").permitAll()
+				.requestMatchers("/oauth/kakao/login", "/oauth/kakao/token/create", "/home").permitAll()
 				.anyRequest().authenticated());
 
 		// 필터 등록
