@@ -8,8 +8,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.hanbat.guessmebackend.domain.user.dto.CodeInputResponse;
 import com.hanbat.guessmebackend.domain.user.dto.CodeResponse;
+import com.hanbat.guessmebackend.domain.user.dto.RoleWardInfoRequest;
+import com.hanbat.guessmebackend.domain.user.dto.RoleWardInfoResponse;
 import com.hanbat.guessmebackend.domain.user.dto.UserCommonInfoRequest;
 import com.hanbat.guessmebackend.domain.user.dto.UserCommonInfoResponse;
+import com.hanbat.guessmebackend.domain.user.entity.Role;
 import com.hanbat.guessmebackend.domain.user.entity.User;
 import com.hanbat.guessmebackend.domain.user.repository.UserRepository;
 import com.hanbat.guessmebackend.global.error.exception.CustomException;
@@ -37,6 +40,21 @@ public class UserService {
 
 	}
 
+	@Transactional
+	public RoleWardInfoResponse postWardUserInfo(RoleWardInfoRequest roleWardInfoRequest) {
+		final User user = memberUtil.getCurrentUser();
+
+		if (user.getRole() != Role.WARD) {
+			throw new CustomException(ErrorCode.USER_ROLE_IS_NOT_WARD);
+		}
+
+		user.updateWardUserInfo(roleWardInfoRequest.getInterest(), roleWardInfoRequest.getWorry());
+		userRepository.save(user);
+		return RoleWardInfoResponse.fromUser(user);
+
+
+	}
+
 	public CodeInputResponse validateCode(String code) {
 		final User inputUser = memberUtil.getCurrentUser();
 		User ownerUser = userRepository.findByUserCode(code)
@@ -53,4 +71,6 @@ public class UserService {
 		final User user = memberUtil.getCurrentUser();
 		return new CodeResponse(user.getUserCode());
 	}
+
+
 }
