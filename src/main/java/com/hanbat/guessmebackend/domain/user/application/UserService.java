@@ -42,13 +42,6 @@ public class UserService {
 		User ownerUser = userRepository.findByUserCode(code)
 			.orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
-
-		Optional.of(code)
-			.filter(c -> c.equals(ownerUser.getUserCode()))
-			.ifPresentOrElse(
-				c -> {},
-				() -> { throw new CustomException(ErrorCode.USER_CODE_NOT_MATCHED); });
-
 		return CodeInputResponse.builder()
 			.ownerId(ownerUser.getId())
 			.code(code)
