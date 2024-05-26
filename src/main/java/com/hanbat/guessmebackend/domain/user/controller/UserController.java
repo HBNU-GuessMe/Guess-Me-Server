@@ -45,7 +45,7 @@ public class UserController {
 	}
 
 	/*
-		입력한 코드가 유저테이블에 있는 코드인지 확인, 코드가 일치하는지 확인
+		입력한 코드가 유저테이블에 있는 코드인지 확인
 	 */
 	@GetMapping("/code/input/validate")
 	public ResponseEntity<CodeInputResponse> validateCode(@RequestParam @NotNull String code) {
