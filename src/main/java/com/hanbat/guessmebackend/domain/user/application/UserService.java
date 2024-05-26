@@ -12,6 +12,7 @@ import com.hanbat.guessmebackend.domain.user.dto.RoleWardInfoRequest;
 import com.hanbat.guessmebackend.domain.user.dto.RoleWardInfoResponse;
 import com.hanbat.guessmebackend.domain.user.dto.UserCommonInfoRequest;
 import com.hanbat.guessmebackend.domain.user.dto.UserCommonInfoResponse;
+import com.hanbat.guessmebackend.domain.user.dto.UserTotalResponse;
 import com.hanbat.guessmebackend.domain.user.entity.Role;
 import com.hanbat.guessmebackend.domain.user.entity.User;
 import com.hanbat.guessmebackend.domain.user.repository.UserRepository;
@@ -70,6 +71,11 @@ public class UserService {
 	public CodeResponse getCode() {
 		final User user = memberUtil.getCurrentUser();
 		return new CodeResponse(user.getUserCode());
+	}
+
+	public UserTotalResponse getUserTotalInfo() {
+		final User user = memberUtil.getCurrentUser();
+		return UserTotalResponse.fromUser(user);
 	}
 
 
