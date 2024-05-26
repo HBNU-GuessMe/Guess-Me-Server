@@ -23,12 +23,15 @@ public enum ErrorCode {
 	USER_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 유저를 찾을 수 없습니다."),
 	USER_SOCIAL_INFO_NOT_FOUND(HttpStatus.NOT_FOUND, "소셜 정보를 찾을 수 없습니다."),
 	USER_ALREADY_REGISTERED(HttpStatus.CONFLICT, "이미 가입된 유저입니다."),
+	USER_CODE_NOT_MATCHED(HttpStatus.BAD_REQUEST, "코드가 일치하지않습니다."),
+	USER_ROLE_IS_NOT_WARD(HttpStatus.BAD_REQUEST, "유저가 피보호자가 아닙니다."),
 
 
 	// Family
 	FAMILY_CODE_CONNECTION_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 코드를 찾을 수 없습니다."),
 	FAMILY_CONNECTION_DURATION_OVERTIME(HttpStatus.BAD_REQUEST, "가족 연결 대기 시간이 초과되었습니다. 다시 시도해주세요."),
 	FAMILY_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 가족을 찾을 수 없습니다."),
+	FAMILY_CODE_IS_NOT_OWNER(HttpStatus.BAD_REQUEST, "해당 코드의 주인이 아닙니다."),
 
 	// Question
 	QUESTION_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 질문을 찾을 수 없습니다."),
