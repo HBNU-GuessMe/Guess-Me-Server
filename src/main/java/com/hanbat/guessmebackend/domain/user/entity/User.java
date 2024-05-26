@@ -67,6 +67,7 @@ public class User extends BaseTimeEntity {
 	public User (String snsId, SnsType snsType) {
 		this.snsId = snsId;
 		this.snsType = snsType;
+		createCode();
 	}
 
 	public void updateUserInfo(Role role, String nickname, Gender gender, LocalDate birth) {
@@ -77,9 +78,13 @@ public class User extends BaseTimeEntity {
 	}
 
 	// 랜덤 문자열을 만드는 작업을 서비스에서 할 필요가 없음 -> Entity 내에 만들거나 따로 클래스를 만들어줘야함
-	public void create() {
+	private void createCode() {
 		String userCode = RandomStringUtils.randomAlphanumeric(10);
 		this.userCode = userCode;
+	}
+
+	public void updateFamily(Family family) {
+		this.family = family;
 	}
 
 
