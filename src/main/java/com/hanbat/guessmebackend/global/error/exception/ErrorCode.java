@@ -32,6 +32,7 @@ public enum ErrorCode {
 	FAMILY_CONNECTION_DURATION_OVERTIME(HttpStatus.BAD_REQUEST, "가족 연결 대기 시간이 초과되었습니다. 다시 시도해주세요."),
 	FAMILY_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 가족을 찾을 수 없습니다."),
 	FAMILY_CODE_IS_NOT_OWNER(HttpStatus.BAD_REQUEST, "해당 코드의 주인이 아닙니다."),
+	FAMILY_AND_USERS_NOT_FOUND(HttpStatus.BAD_REQUEST, "가족에 연결된 유저를 찾을 수 없습니다."),
 
 	// Question
 	QUESTION_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 질문을 찾을 수 없습니다."),
