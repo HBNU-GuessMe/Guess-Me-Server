@@ -16,6 +16,8 @@ import com.hanbat.guessmebackend.domain.user.dto.RoleWardInfoRequest;
 import com.hanbat.guessmebackend.domain.user.dto.RoleWardInfoResponse;
 import com.hanbat.guessmebackend.domain.user.dto.UserCommonInfoRequest;
 import com.hanbat.guessmebackend.domain.user.dto.UserCommonInfoResponse;
+import com.hanbat.guessmebackend.domain.user.dto.UserTotalResponse;
+import com.hanbat.guessmebackend.domain.user.entity.User;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -60,6 +62,14 @@ public class UserController {
 	@PostMapping("/ward/info/register")
 	public ResponseEntity<RoleWardInfoResponse> registerWardUserInfo(@RequestBody @Valid RoleWardInfoRequest roleWardInfoRequest) {
 		return ResponseEntity.status(HttpStatus.OK).body(userService.postWardUserInfo(roleWardInfoRequest));
+	}
+
+	/*
+		유저 전체 정보 조회
+	 */
+	@GetMapping("/info")
+	public ResponseEntity<UserTotalResponse> getUserTotalInfo() {
+		return ResponseEntity.ok(userService.getUserTotalInfo());
 	}
 
 }
