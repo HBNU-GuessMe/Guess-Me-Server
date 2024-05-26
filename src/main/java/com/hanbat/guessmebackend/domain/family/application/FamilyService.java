@@ -29,6 +29,13 @@ public class FamilyService {
 
 	@Transactional
 	public FamilyInfoResponse connectFamily(FamilyInfoRequest familyInfoRequest) {
+		final User ownerUser = memberUtil.getCurrentUser();
+
+		Optional.of(familyInfoRequest.getCode())
+			.filter((c) -> c.equals(ownerUser.getUserCode()))
+			.ifPresentOrElse(
+				c -> {},
+				() -> { throw new CustomException(ErrorCode.FAMILY_CODE_IS_NOT_OWNER);});
 
 		int count = familyInfoRequest.getUserIds().size();
 
