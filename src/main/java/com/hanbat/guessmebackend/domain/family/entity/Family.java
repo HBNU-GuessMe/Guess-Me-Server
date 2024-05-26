@@ -28,7 +28,7 @@ public class Family extends BaseTimeEntity {
 	@Column(columnDefinition = "INT(5)", nullable = false)
 	private int count;
 
-	@Builder(access = AccessLevel.PRIVATE)
+	@Builder
 	private Family(String familyCode, int count) {
 		this.familyCode = familyCode;
 		this.count = count;
