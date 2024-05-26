@@ -87,6 +87,11 @@ public class User extends BaseTimeEntity {
 		this.family = family;
 	}
 
+	public void updateWardUserInfo(String interest,String worry) {
+		this.interest = interest;
+		this.worry = worry;
+	}
+
 
 
 
