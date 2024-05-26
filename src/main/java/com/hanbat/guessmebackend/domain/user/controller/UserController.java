@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.hanbat.guessmebackend.domain.user.application.UserService;
 import com.hanbat.guessmebackend.domain.user.dto.CodeInputResponse;
 import com.hanbat.guessmebackend.domain.user.dto.CodeResponse;
+import com.hanbat.guessmebackend.domain.user.dto.RoleWardInfoRequest;
+import com.hanbat.guessmebackend.domain.user.dto.RoleWardInfoResponse;
 import com.hanbat.guessmebackend.domain.user.dto.UserCommonInfoRequest;
 import com.hanbat.guessmebackend.domain.user.dto.UserCommonInfoResponse;
 
@@ -50,6 +52,14 @@ public class UserController {
 	@GetMapping("/code/input/validate")
 	public ResponseEntity<CodeInputResponse> validateCode(@RequestParam @NotNull String code) {
 		return ResponseEntity.ok(userService.validateCode(code));
+	}
+
+	/*
+		사전 정보
+	 */
+	@PostMapping("/ward/info/register")
+	public ResponseEntity<RoleWardInfoResponse> registerWardUserInfo(@RequestBody @Valid RoleWardInfoRequest roleWardInfoRequest) {
+		return ResponseEntity.status(HttpStatus.OK).body(userService.postWardUserInfo(roleWardInfoRequest));
 	}
 
 }
