@@ -8,9 +8,12 @@ import com.hanbat.guessmebackend.domain.family.entity.Family;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,6 +24,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Question extends BaseTimeEntity {
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(columnDefinition = "BIGINT(11)")
 	private Long id;
 
@@ -37,7 +41,7 @@ public class Question extends BaseTimeEntity {
 	@Column(name = "is_done", columnDefinition = "TINYINT(1)", nullable = false)
 	private Boolean isDone;
 
-	@Builder(access = AccessLevel.PRIVATE)
+	@Builder
 	private Question(
 		Family family,
 		String content,
@@ -47,5 +51,15 @@ public class Question extends BaseTimeEntity {
 		this.content = content;
 		this.isDone = isDone;
 	}
+
+	public void updateIsDone(Boolean isDone) {
+		this.isDone = isDone;
+	}
+
+	public void updatePublishDate(LocalDateTime publishDate) {
+		this.publishDate = publishDate;
+	}
+
+
 
 }
