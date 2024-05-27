@@ -53,6 +53,10 @@ public class Question extends BaseTimeEntity {
 		this.isDone = isDone;
 	}
 
+	public void updatePublishDate(LocalDateTime publishDate) {
+		this.publishDate = publishDate;
+	}
+
 
 
 }
