@@ -11,6 +11,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -47,5 +48,11 @@ public class Question extends BaseTimeEntity {
 		this.content = content;
 		this.isDone = isDone;
 	}
+
+	public void updateIsDone(Boolean isDone) {
+		this.isDone = isDone;
+	}
+
+
 
 }
