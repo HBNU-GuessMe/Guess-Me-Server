@@ -58,5 +58,24 @@ public class AnswerService {
 		return AnswerRegisterResponse.fromQuestionAndAnswer(question, answer);
 	}
 
+	public AnswerGetResponse getOneAnswer(Long questionId) {
+		final User user = memberUtil.getCurrentUser();
+		Answer answer = answerRepository.findAnswerByQuestionIdAndUserId(questionId, user.getId())
+			.orElseThrow(() -> new CustomException(ErrorCode.ANSWER_NOT_FOUND));
+		return AnswerGetResponse.fromAnswer(user.getId(), answer);
+	}
 
+	public AnswerGetAllResponse getAllAnswers(Long questionId) {
+		Question question = questionRepository.findById(questionId)
+			.orElseThrow(() -> new CustomException(ErrorCode.QUESTION_NOT_FOUND));
+
+		List<Answer> answers = answerRepository.findAnswersByQuestionId(questionId);
+		List<AnswerGetResponse> answerResponses = answers.stream()
+			.map(answer -> AnswerGetResponse.fromAnswer(answer.getUser().getId(), answer))
+			.toList();
+
+		return AnswerGetAllResponse.fromAnswer(question, answerResponses);
+
+
+	}
 }
