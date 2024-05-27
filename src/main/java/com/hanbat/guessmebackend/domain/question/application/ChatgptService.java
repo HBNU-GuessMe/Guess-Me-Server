@@ -55,7 +55,7 @@ public class ChatgptService {
 	 */
 
 	@Transactional
-	public List<QuestionCreateResponse> createQuestion() throws JsonProcessingException { // 질문할 문장, 얼마나 창의적인 답을 작성하도록 할지 정하는 값, 응답의 컨텍스트 길이
+	public List<QuestionCreateResponse> createQuestion() throws JsonProcessingException {
 		final User user = memberUtil.getCurrentUser();
 		if (user.getRole() != Role.WARD) {
 			throw new CustomException(ErrorCode.USER_ROLE_IS_NOT_WARD);
@@ -77,6 +77,7 @@ public class ChatgptService {
 		RestTemplate restTemplate = new RestTemplate();
 		ResponseEntity<Map> response = restTemplate.postForEntity(ENDPOINT, request, Map.class);
 
+		// response 파싱
 		Map<String, Object> body = response.getBody();
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode node = mapper.convertValue(body, JsonNode.class);
@@ -85,6 +86,7 @@ public class ChatgptService {
 		String content = message.get("content").asText();
 		log.info(content);
 
+		// 원하는 형태로 파싱
 		String[] lines = content.split("\\n");
 		List<QuestionCreateResponse> questions = new ArrayList<>();
 		Question question = null;
@@ -125,7 +127,9 @@ public class ChatgptService {
 
 		Map<String, Object> message2 = new HashMap<>();
 		message2.put("role", "user");
-		message2.put("content", user.getNickname() + "는 " + user.getInterest() + "에 관심을 가지고 있어. 그리고, " + user.getWorry() + "(이) 현재 걱정거리야. " + user.getNickname() + "에게 주어진 관심사와 걱정거리를 바탕으로 각 질문마다 이름을 포함하고, 번호를 포함해 질문을 구체적으로 5개 만들어줘.");
+		message2.put("content", user.getNickname() + "는 " + user.getInterest() + "에 관심을 가지고 있어. 그리고, "
+			+ user.getWorry() + "(이) 현재 걱정거리야. " + user.getNickname() +
+			"에게 주어진 관심사와 걱정거리를 바탕으로 각 질문마다 이름을 포함하고, 번호를 포함해 질문을 구체적으로 5개 만들어줘.");
 
 		List<Map<String, Object>> messages = new ArrayList<>();
 		messages.add(message1);
