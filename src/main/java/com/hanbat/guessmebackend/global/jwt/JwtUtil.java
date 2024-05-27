@@ -12,7 +12,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 @Component
 public class JwtUtil {
-	private static final Long accessTokenValidTime = Duration.ofHours(2).toMillis(); // 2시간
+	private static final Long accessTokenValidTime = Duration.ofDays(2).toMillis(); // 2시간
 	private static final Long refreshTokenValidTime = Duration.ofDays(14).toMillis(); // 14주
 
 	@Value("${jwt.secret}")
