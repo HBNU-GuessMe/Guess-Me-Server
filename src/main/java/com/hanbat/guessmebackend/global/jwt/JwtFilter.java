@@ -30,10 +30,10 @@ public class JwtFilter extends OncePerRequestFilter {
 		FilterChain filterChain) throws ServletException, IOException {
 
 		String path = request.getRequestURI();
+		log.info(path);
 
 		// 로그인 요청일경우 건너뛰기
-		if (path.startsWith("/oauth") || path.endsWith("home")) {
-			log.info(path);
+		if (path.startsWith("/oauth") || path.endsWith("home") || path.endsWith("/ws/chat")) {
 			filterChain.doFilter(request, response);
 			return;
 		}

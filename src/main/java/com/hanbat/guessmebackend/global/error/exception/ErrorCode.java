@@ -18,6 +18,7 @@ public enum ErrorCode {
 	// Authentication
 	TOKEN_NOT_FOUND(HttpStatus.NOT_FOUND, "토큰이 헤더에 없습니다."),
 	AUTH_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "시큐리티 인증 정보를 찾을 수 없습니다."),
+	TOKEN_IS_EXPIRED(HttpStatus.UNAUTHORIZED, "토큰이 만료되었습니다."),
 
 	// User
 	USER_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 유저를 찾을 수 없습니다."),
@@ -46,7 +47,7 @@ public enum ErrorCode {
 
 
 	// Chat
-	CHAT_ROOM_NOT_CREATED_YET(HttpStatus.BAD_REQUEST, "아직 채팅방이 생성되지 않았습니다.");
+	CHAT_ROOM_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 채팅방을 찾을 수 없습니다.");
 
 	private final HttpStatus status;
 	private final String message;
