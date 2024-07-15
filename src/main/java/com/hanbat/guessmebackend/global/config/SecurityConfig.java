@@ -29,12 +29,12 @@ public class SecurityConfig {
 					CorsConfiguration config = new CorsConfiguration();
 
 					// 프론트엔드에서 데이터를 보낼 포트 허용
-					config.setAllowedOrigins(Collections.singletonList("*"));
 					config.setAllowedMethods(Collections.singletonList("*"));
 					config.setAllowCredentials(true);
 					config.setAllowedHeaders(Collections.singletonList("*"));
 					config.setMaxAge(3600L);
 					config.setExposedHeaders(Collections.singletonList("Authorization"));
+					config.setAllowedOriginPatterns(Collections.singletonList("*"));
 
 					return config;
 				}
@@ -51,7 +51,7 @@ public class SecurityConfig {
 		// 로그인한 사용자만 접근 가능
 		http
 			.authorizeHttpRequests((auth) -> auth
-				.requestMatchers("/oauth/kakao/login", "/oauth/kakao/token/create", "/home").permitAll()
+				.requestMatchers("/oauth/kakao/login", "/oauth/kakao/token/create", "/home", "/ws/chat").permitAll()
 				.anyRequest().authenticated());
 
 		// 필터 등록

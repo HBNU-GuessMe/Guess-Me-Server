@@ -66,7 +66,7 @@ public class ChatgptService {
 		headers.set("Authorization","Bearer " + apiKey);
 
 		Map<String, Object> requestBody = new HashMap<>();
-		requestBody.put("model", "ft:gpt-3.5-turbo-1106:personal:gptassist:9P8djPh7");
+		requestBody.put("model", "ft:gpt-3.5-turbo-1106:personal:aigueseme:9kl9IecO");
 		List<Map<String, Object>> messages = createRequest(user);
 
 		requestBody.put("messages", messages);
