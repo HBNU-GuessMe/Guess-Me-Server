@@ -14,6 +14,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -23,7 +24,7 @@ import lombok.NoArgsConstructor;
 public class Chatroom extends BaseTimeEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(columnDefinition = "BINGINT(11)")
+	@Column(columnDefinition = "BIGINT(11)")
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -35,6 +36,17 @@ public class Chatroom extends BaseTimeEntity {
 
 	@Column(name = "is_ended", columnDefinition = "TINYINT(1)", nullable = false)
 	private boolean isEnded;
+
+	@Builder
+	public Chatroom(Family family, LocalDateTime createdAt, boolean isEnded) {
+		this.family = family;
+		this.createdAt = createdAt;
+		this.isEnded = isEnded;
+	}
+
+	public void updateIsEnded(boolean isEnded) {
+		this.isEnded = isEnded;
+	}
 
 
 }
