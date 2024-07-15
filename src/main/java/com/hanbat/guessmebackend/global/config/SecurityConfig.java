@@ -29,12 +29,12 @@ public class SecurityConfig {
 					CorsConfiguration config = new CorsConfiguration();
 
 					// 프론트엔드에서 데이터를 보낼 포트 허용
-					config.setAllowedOrigins(Collections.singletonList("*"));
 					config.setAllowedMethods(Collections.singletonList("*"));
 					config.setAllowCredentials(true);
 					config.setAllowedHeaders(Collections.singletonList("*"));
 					config.setMaxAge(3600L);
 					config.setExposedHeaders(Collections.singletonList("Authorization"));
+					config.setAllowedOriginPatterns(Collections.singletonList("*"));
 
 					return config;
 				}
