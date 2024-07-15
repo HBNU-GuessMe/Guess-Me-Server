@@ -43,15 +43,12 @@ public class Answer extends BaseTimeEntity {
 	@Column(columnDefinition = "VARCHAR(255)", nullable = false)
 	private String content;
 
-	@Column(name = "is_done", columnDefinition = "TINYINT(1)", nullable = false)
-	private Boolean isDone;
 
 	@Builder
-	private Answer(Question question, User user, String content, Boolean isDone) {
+	private Answer(Question question, User user, String content) {
 		this.question = question;
 		this.user = user;
 		this.content = content;
-		this.isDone = isDone;
 
 	}
 }
