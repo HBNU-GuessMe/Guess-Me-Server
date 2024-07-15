@@ -35,31 +35,33 @@ public class Question extends BaseTimeEntity {
 	@Column(columnDefinition = "VARCHAR(255)", nullable = false)
 	private String content;
 
-	@Column(name = "publish_date", columnDefinition = "DATETIME")
-	private LocalDateTime publishDate;
+	@Column(name = "published_at", columnDefinition = "DATETIME")
+	private LocalDateTime publishedAt;
 
-	@Column(name = "is_done", columnDefinition = "TINYINT(1)", nullable = false)
-	private Boolean isDone;
+	@Column(name = "updated_at", columnDefinition = "DATETIME")
+	private LocalDateTime updatedAt;
+
+	@Column(name = "is_passed", columnDefinition = "TINYINT(1)", nullable = false)
+	private Boolean isPassed;
 
 	@Builder
-	private Question(
-		Family family,
-		String content,
-		Boolean isDone
-	) {
+	private Question(Family family, String content, Boolean isPassed) {
 		this.family = family;
 		this.content = content;
-		this.isDone = isDone;
+		this.isPassed = isPassed;
 	}
 
-	public void updateIsDone(Boolean isDone) {
-		this.isDone = isDone;
+	public void updateIsPassed(Boolean isPassed) {
+		this.isPassed = isPassed;
 	}
 
-	public void updatePublishDate(LocalDateTime publishDate) {
-		this.publishDate = publishDate;
+	public void updatePublishedAt(LocalDateTime publishedAt) {
+		this.publishedAt = publishedAt;
 	}
 
+	public void updateUpdatedAt(LocalDateTime updatedAt) {
+		this.updatedAt = updatedAt;
+	}
 
 
 }
