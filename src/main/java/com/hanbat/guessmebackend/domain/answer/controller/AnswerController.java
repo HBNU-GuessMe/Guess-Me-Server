@@ -45,7 +45,7 @@ public class AnswerController {
 	}
 
 	/*
-		유저들 전체의 답변 확인
+		가족들 전체의 답변 확인
 	 */
 	@GetMapping("/getAll")
 	public ResponseEntity<AnswerGetAllResponse> getAllAnswers(@RequestParam Long questionId) {
