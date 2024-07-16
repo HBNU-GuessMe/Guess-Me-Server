@@ -52,9 +52,13 @@ public class ChatEventListener {
 	@Transactional
 	public void handleChatRoomEvent(Chatroom chatroom) {
 		log.info("이벤트 시작");
-		scheduler.schedule(() -> chatService.sendEndMessage(chatroom.getId()), 30, TimeUnit.SECONDS);
-	}
+		scheduler.schedule(() -> {
+			chatService.sendEndMessage(chatroom.getId());
+			log.info("메서드 수행확인");
+			scheduler.shutdown();
+		}, 30, TimeUnit.SECONDS);
 
+	}
 }
 
 
