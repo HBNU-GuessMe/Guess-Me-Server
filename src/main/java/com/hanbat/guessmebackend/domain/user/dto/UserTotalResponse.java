@@ -9,6 +9,13 @@ import com.hanbat.guessmebackend.domain.user.entity.User;
 public record UserTotalResponse(Long id, Long familyId, Role role, String nickname, Gender gender,
 								LocalDate birth, String interest, String worry) {
 	public static UserTotalResponse fromUser(User user) {
+		if (user.getFamily() == null) {
+			return new UserTotalResponse(
+				user.getId(), null, user.getRole(), user.getNickname(), user.getGender(), user.getBirth()
+				, user.getInterest(), user.getWorry()
+			);
+		}
+
 		return new UserTotalResponse(
 			user.getId(), user.getFamily().getId(), user.getRole(), user.getNickname(), user.getGender(), user.getBirth()
 			, user.getInterest(), user.getWorry()
