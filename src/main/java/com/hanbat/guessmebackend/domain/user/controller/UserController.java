@@ -12,12 +12,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.hanbat.guessmebackend.domain.user.application.UserService;
 import com.hanbat.guessmebackend.domain.user.dto.CodeInputResponse;
 import com.hanbat.guessmebackend.domain.user.dto.CodeResponse;
-import com.hanbat.guessmebackend.domain.user.dto.RoleWardInfoRequest;
-import com.hanbat.guessmebackend.domain.user.dto.RoleWardInfoResponse;
+import com.hanbat.guessmebackend.domain.user.dto.InterestAndWorriesInfoRequest;
+import com.hanbat.guessmebackend.domain.user.dto.InterestAndWorriesInfoResponse;
 import com.hanbat.guessmebackend.domain.user.dto.UserCommonInfoRequest;
 import com.hanbat.guessmebackend.domain.user.dto.UserCommonInfoResponse;
 import com.hanbat.guessmebackend.domain.user.dto.UserTotalResponse;
-import com.hanbat.guessmebackend.domain.user.entity.User;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -59,9 +58,9 @@ public class UserController {
 	/*
 		사전 정보
 	 */
-	@PostMapping("/ward/info/register")
-	public ResponseEntity<RoleWardInfoResponse> registerWardUserInfo(@RequestBody @Valid RoleWardInfoRequest roleWardInfoRequest) {
-		return ResponseEntity.status(HttpStatus.OK).body(userService.postWardUserInfo(roleWardInfoRequest));
+	@PostMapping("/concern/info/register")
+	public ResponseEntity<InterestAndWorriesInfoResponse> registerConcernUserInfo(@RequestBody @Valid InterestAndWorriesInfoRequest interestAndWorriesInfoRequest) {
+		return ResponseEntity.status(HttpStatus.OK).body(userService.postInterestAndWorriesUserInfo(interestAndWorriesInfoRequest));
 	}
 
 	/*
