@@ -15,13 +15,18 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder
+@ToString
 public class Question extends BaseTimeEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,13 +43,14 @@ public class Question extends BaseTimeEntity {
 	@Column(name = "published_at", columnDefinition = "DATETIME")
 	private LocalDateTime publishedAt;
 
-	@Column(name = "updated_at", columnDefinition = "DATETIME")
-	private LocalDateTime updatedAt;
-
 	@Column(name = "is_passed", columnDefinition = "TINYINT(1)", nullable = false)
 	private Boolean isPassed;
 
-	@Builder
+	@Builder.Default
+	@Column(name = "answer_count", columnDefinition = "INT(5)", nullable = false)
+	private int answerCount = 0;
+
+
 	private Question(Family family, String content, Boolean isPassed) {
 		this.family = family;
 		this.content = content;
@@ -59,9 +65,8 @@ public class Question extends BaseTimeEntity {
 		this.publishedAt = publishedAt;
 	}
 
-	public void updateUpdatedAt(LocalDateTime updatedAt) {
-		this.updatedAt = updatedAt;
+	public void updateAnswerCount(int answerCount) {
+		this.answerCount = answerCount;
 	}
-
 
 }
