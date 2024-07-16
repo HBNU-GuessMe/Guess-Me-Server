@@ -12,10 +12,12 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString
 public class Family extends BaseTimeEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,6 +33,10 @@ public class Family extends BaseTimeEntity {
 	@Builder
 	private Family(String familyCode, int count) {
 		this.familyCode = familyCode;
+		this.count = count;
+	}
+
+	public void updateCount(int count) {
 		this.count = count;
 	}
 }
