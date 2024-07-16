@@ -14,4 +14,6 @@ public interface FamilyRepository extends JpaRepository<Family, Long> {
 	@Query("SELECT u FROM User u JOIN u.family f WHERE f.id = :familyId" )
 	Optional<List<User>> findUsersByFamilyId(@Param("familyId") Long familyId);
 
+	Boolean existsFamilyByFamilyCode(String familyCode);
+	Optional<Family> findFamilyByFamilyCode(String familyCode);
 }
