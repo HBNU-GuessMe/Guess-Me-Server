@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 
 @Getter
-public class RoleWardInfoRequest {
+public class InterestAndWorriesInfoRequest {
 	@NotNull private String interest;
 	@NotNull private String worry;
 }

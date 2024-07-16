@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hanbat.guessmebackend.domain.family.application.FamilyService;
-import com.hanbat.guessmebackend.domain.family.dto.FamilyInfoRequest;
-import com.hanbat.guessmebackend.domain.family.dto.FamilyInfoResponse;
+import com.hanbat.guessmebackend.domain.family.dto.FamilyConnectionRequest;
+import com.hanbat.guessmebackend.domain.family.dto.FamilyConnectionWithOwnerRequest;
 import com.hanbat.guessmebackend.domain.family.dto.FamilyUserInfoResponse;
 
 import lombok.RequiredArgsConstructor;
@@ -28,9 +28,19 @@ public class FamilyController {
 		코드 주인이 '모든 가족이 연결되었습니까?' 버튼을 클릭시 가족 테이블에 저장
 	 */
 
+	@PostMapping("/owner/connection")
+	public ResponseEntity<FamilyUserInfoResponse> connectFamilyWithOwner(@RequestBody FamilyConnectionWithOwnerRequest familyConnectionWithOwnerRequest) {
+		return ResponseEntity.status(HttpStatus.OK).body(familyService.connectFamilyWithOwner(
+			familyConnectionWithOwnerRequest));
+	}
+
+	/*
+		추가 가족 구성원이 가족 연결
+	 */
 	@PostMapping("/connection")
-	public ResponseEntity<FamilyInfoResponse> connectFamily(@RequestBody FamilyInfoRequest familyInfoRequest) {
-		return ResponseEntity.status(HttpStatus.OK).body(familyService.connectFamily(familyInfoRequest));
+	public ResponseEntity<FamilyUserInfoResponse> connectFamily(@RequestBody FamilyConnectionRequest familyConnectionRequest) {
+		return ResponseEntity.status(HttpStatus.OK).body(familyService.connectFamily(
+			familyConnectionRequest));
 	}
 
 	/*

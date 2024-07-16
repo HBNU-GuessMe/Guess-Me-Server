@@ -34,7 +34,7 @@ public class AnswerService {
 	private final ApplicationEventPublisher eventPublisher;
 
 	/*
-		답변할 때마다 이벤트 트리거로 확인
+		질문에 답변
 	 */
 	@Transactional
 	public AnswerRegisterResponse answerQuestion(AnswerRegisterRequest answerRegisterRequest) {
@@ -48,16 +48,20 @@ public class AnswerService {
 			.question(question)
 			.user(user)
 			.content(answerRegisterRequest.getContent())
-			.isDone(true)
 			.build();
 
 		answerRepository.save(answer);
+		question.updateAnswerCount(question.getAnswerCount() + 1);
+		questionRepository.save(question);
 
-		eventPublisher.publishEvent(question);
+		eventPublisher.publishEvent(answer);
 
 		return AnswerRegisterResponse.fromQuestionAndAnswer(question, answer);
 	}
 
+	/*
+		현재 사용자의 답변 조회
+	 */
 	public AnswerGetResponse getOneAnswer(Long questionId) {
 		final User user = memberUtil.getCurrentUser();
 		Answer answer = answerRepository.findAnswerByQuestionIdAndUserId(questionId, user.getId())
@@ -65,9 +69,17 @@ public class AnswerService {
 		return AnswerGetResponse.fromAnswer(user.getId(), answer);
 	}
 
+	/*
+		question이 isPassed면, 가족들의 답변 조회
+	 */
+
 	public AnswerGetAllResponse getAllAnswers(Long questionId) {
 		Question question = questionRepository.findById(questionId)
 			.orElseThrow(() -> new CustomException(ErrorCode.QUESTION_NOT_FOUND));
+
+		if (!question.getIsPassed()) {
+			throw new CustomException(ErrorCode.NOT_PASSED_QUESTION);
+		}
 
 		List<Answer> answers = answerRepository.findAnswersByQuestionId(questionId);
 		List<AnswerGetResponse> answerResponses = answers.stream()

@@ -1,9 +1,9 @@
-package com.hanbat.guessmebackend.domain.question.entity;
+package com.hanbat.guessmebackend.domain.comment.entity;
 
 import java.time.LocalDateTime;
 
-import com.hanbat.guessmebackend.domain.common.model.BaseTimeEntity;
 import com.hanbat.guessmebackend.domain.family.entity.Family;
+import com.hanbat.guessmebackend.domain.user.entity.User;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,46 +13,45 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.PrePersist;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
-@Builder
-@ToString
-public class Question extends BaseTimeEntity {
+public class CommentQuestion {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(columnDefinition = "BIGINT(11)")
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "family_id", nullable = false)
-	private Family family;
+	@JoinColumn(name = "user_id", nullable = false)
+	private User user;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "family_question_id", nullable = false)
+	private FamilyCommentQuestion familyCommentQuestion;
 
 	@Column(columnDefinition = "VARCHAR(255)", nullable = false)
 	private String content;
 
-	@Column(name = "published_at", columnDefinition = "DATETIME")
-	private LocalDateTime publishedAt;
-
 	@Column(name = "is_passed", columnDefinition = "TINYINT(1)", nullable = false)
 	private Boolean isPassed;
 
-	@Builder.Default
-	@Column(name = "answer_count", columnDefinition = "INT(5)", nullable = false)
-	private int answerCount = 0;
+	@Column(name = "published_at", columnDefinition = "DATETIME", nullable = false)
+	private LocalDateTime publishedAt;
 
+	@Column(name = "updated_at", columnDefinition = "DATETIME", nullable = false)
+	private LocalDateTime updatedAt;
 
-	private Question(Family family, String content, Boolean isPassed) {
-		this.family = family;
+	@Builder
+	public CommentQuestion(User user, FamilyCommentQuestion familyCommentQuestion, String content,
+		Boolean isPassed) {
+		this.user = user;
+		this.familyCommentQuestion = familyCommentQuestion;
 		this.content = content;
 		this.isPassed = isPassed;
 	}
@@ -65,8 +64,8 @@ public class Question extends BaseTimeEntity {
 		this.publishedAt = publishedAt;
 	}
 
-	public void updateAnswerCount(int answerCount) {
-		this.answerCount = answerCount;
+	public void updateUpdatedAt(LocalDateTime updatedAt) {
+		this.updatedAt = updatedAt;
 	}
 
 }

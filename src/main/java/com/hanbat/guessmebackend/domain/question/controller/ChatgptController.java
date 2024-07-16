@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.hanbat.guessmebackend.domain.question.application.ChatgptService;
+import com.hanbat.guessmebackend.domain.question.application.ChatgptQuestionService;
 import com.hanbat.guessmebackend.domain.question.application.QuestionService;
 import com.hanbat.guessmebackend.domain.question.dto.QuestionCreateResponse;
 import com.hanbat.guessmebackend.domain.question.dto.QuestionGetResponse;
@@ -25,7 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ChatgptController {
 
-	private final ChatgptService chatgptService;
+	private final ChatgptQuestionService chatgptQuestionService;
 	private final QuestionService questionService;
 
 	/*
@@ -33,7 +33,7 @@ public class ChatgptController {
 	 */
 	@PostMapping("/question/create")
 	public ResponseEntity<List<QuestionCreateResponse>> request() throws JsonProcessingException {
-		return ResponseEntity.ok(chatgptService.createQuestion());
+		return ResponseEntity.ok(chatgptQuestionService.createQuestion());
 	}
 
 	/*
