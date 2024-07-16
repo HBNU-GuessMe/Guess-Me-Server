@@ -62,6 +62,19 @@ public class UserService {
 		User ownerUser = userRepository.findByUserCode(code)
 			.orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
+		// 이미 가족연결이 되어있는 코드면, 가족 구성원들 기다릴 필요없이 따로 연결하기 화면
+		// 원래 가족연결은 가족코드 owner만 가능 -> 모두 다 비슷한 동일한 시점에 연결해야하는 문제점 발생
+		// 따로 가족구성원이 연결할 수 있도록 구현 필요
+		if (familyRepository.existsFamilyByFamilyCode(code)) {
+			return CodeInputResponse.builder()
+				.ownerId(ownerUser.getId())
+				.code(code)
+				.isCodeConnected(true)
+				.inputUserId(inputUser.getId())
+				.inputUserName(inputUser.getNickname())
+				.build();
+		}
+
 		return CodeInputResponse.builder()
 			.ownerId(ownerUser.getId())
 			.code(code)
