@@ -9,6 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -27,4 +28,10 @@ public class CommentAnswer {
 
 	@Column(columnDefinition = "VARCHAR(255)", nullable = false)
 	private String content;
+
+	@Builder
+	public CommentAnswer(CommentQuestion commentQuestion, String content) {
+		this.commentQuestion = commentQuestion;
+		this.content = content;
+	}
 }
