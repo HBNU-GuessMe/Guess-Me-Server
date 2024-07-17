@@ -2,7 +2,11 @@ package com.hanbat.guessmebackend.domain.comment.entity;
 
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import com.hanbat.guessmebackend.domain.family.entity.Family;
+import com.hanbat.guessmebackend.domain.question.entity.Question;
 import com.hanbat.guessmebackend.domain.user.entity.User;
 
 import jakarta.persistence.Column;
@@ -32,8 +36,8 @@ public class CommentQuestion {
 	private User user;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "family_question_id", nullable = false)
-	private FamilyCommentQuestion familyCommentQuestion;
+	@JoinColumn(name = "question_id", nullable = false)
+	private Question question;
 
 	@Column(columnDefinition = "VARCHAR(255)", nullable = false)
 	private String content;
@@ -44,14 +48,11 @@ public class CommentQuestion {
 	@Column(name = "published_at", columnDefinition = "DATETIME", nullable = false)
 	private LocalDateTime publishedAt;
 
-	@Column(name = "updated_at", columnDefinition = "DATETIME", nullable = false)
-	private LocalDateTime updatedAt;
-
 	@Builder
-	public CommentQuestion(User user, FamilyCommentQuestion familyCommentQuestion, String content,
+	public CommentQuestion(User user, Question question, String content,
 		Boolean isPassed) {
 		this.user = user;
-		this.familyCommentQuestion = familyCommentQuestion;
+		this.question = question;
 		this.content = content;
 		this.isPassed = isPassed;
 	}
@@ -62,10 +63,6 @@ public class CommentQuestion {
 
 	public void updatePublishedAt(LocalDateTime publishedAt) {
 		this.publishedAt = publishedAt;
-	}
-
-	public void updateUpdatedAt(LocalDateTime updatedAt) {
-		this.updatedAt = updatedAt;
 	}
 
 }
