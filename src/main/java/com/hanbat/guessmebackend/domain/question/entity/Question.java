@@ -50,6 +50,10 @@ public class Question extends BaseTimeEntity {
 	@Column(name = "answer_count", columnDefinition = "INT(5)", nullable = false)
 	private int answerCount = 0;
 
+	@Builder.Default
+	@Column(name = "comment_count", columnDefinition = "INT(5)", nullable = false)
+	private int commentCount = 2;
+
 
 	private Question(Family family, String content, Boolean isPassed) {
 		this.family = family;
