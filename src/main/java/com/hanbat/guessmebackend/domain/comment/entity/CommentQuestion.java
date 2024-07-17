@@ -18,6 +18,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,6 +26,8 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder
 public class CommentQuestion {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,7 +51,11 @@ public class CommentQuestion {
 	@Column(name = "published_at", columnDefinition = "DATETIME", nullable = false)
 	private LocalDateTime publishedAt;
 
-	@Builder
+	@Builder.Default
+	@Column(name = "comment_comment_count", columnDefinition = "INT(5)", nullable = false)
+	private int commentAnswerCount = 0;
+
+
 	public CommentQuestion(User user, Question question, String content,
 		Boolean isPassed) {
 		this.user = user;
@@ -63,6 +70,10 @@ public class CommentQuestion {
 
 	public void updatePublishedAt(LocalDateTime publishedAt) {
 		this.publishedAt = publishedAt;
+	}
+
+	public void updateCommentAnswerCount(int commentAnswerCount) {
+		this.commentAnswerCount = commentAnswerCount;
 	}
 
 }
