@@ -66,7 +66,7 @@ public class AnswerService {
 		final User user = memberUtil.getCurrentUser();
 		Answer answer = answerRepository.findAnswerByQuestionIdAndUserId(questionId, user.getId())
 			.orElseThrow(() -> new CustomException(ErrorCode.ANSWER_NOT_FOUND));
-		return AnswerGetResponse.fromAnswer(user.getId(), answer);
+		return AnswerGetResponse.fromAnswer(user, answer);
 	}
 
 	/*
@@ -83,11 +83,12 @@ public class AnswerService {
 
 		List<Answer> answers = answerRepository.findAnswersByQuestionId(questionId);
 		List<AnswerGetResponse> answerResponses = answers.stream()
-			.map(answer -> AnswerGetResponse.fromAnswer(answer.getUser().getId(), answer))
+			.map(answer -> AnswerGetResponse.fromAnswer(answer.getUser(), answer))
 			.toList();
 
 		return AnswerGetAllResponse.fromAnswer(question, answerResponses);
 
 
 	}
+
 }
