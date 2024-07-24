@@ -49,6 +49,8 @@ public enum ErrorCode {
 	NOT_PASSED_QUESTION(HttpStatus.BAD_REQUEST, "질문이 패스되지않아 다른 가족 구성원의 답변을 볼 수 없습니다."),
 	NOT_COMPLETED_QUESTION_ALL(HttpStatus.BAD_REQUEST, "질문에 대한 답을 하지 않은 가족 구성원 있어 다른 사람의 답변을 볼 수 없습니다."),
 
+	// CommentQuestion
+	COMMENT_QUESTION_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 댓글 질문을 찾을 수 없습니다."),
 
 	// Chat
 	CHAT_ROOM_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 채팅방을 찾을 수 없습니다.");
