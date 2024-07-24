@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.hanbat.guessmebackend.domain.comment.entity.CommentAnswer;
+import com.hanbat.guessmebackend.domain.comment.entity.CommentQuestion;
 
 @Component
 public class AnswerEventListener {
@@ -14,9 +15,9 @@ public class AnswerEventListener {
 	 */
 	@EventListener
 	@Transactional
-	public void handleQuestionEvent(CommentAnswer commentAnswer) {
-		if (commentAnswer.getCommentQuestion().getCommentAnswerCount() == commentAnswer.getCommentQuestion().getQuestion().getFamily().getCount()){
-			commentAnswer.getCommentQuestion().updateIsPassed(true);
+	public void handleQuestionEvent(CommentQuestion commentQuestion) {
+		if (commentQuestion.getCommentAnswerCount() == commentQuestion.getQuestion().getFamily().getCount()){
+			commentQuestion.updateIsPassed(true);
 		}
 	}
 
