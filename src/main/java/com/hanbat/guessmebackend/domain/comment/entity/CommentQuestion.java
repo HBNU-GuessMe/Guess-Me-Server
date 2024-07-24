@@ -17,6 +17,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -42,13 +43,17 @@ public class CommentQuestion {
 	@JoinColumn(name = "question_id", nullable = false)
 	private Question question;
 
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "comment_answer_id")
+	private CommentAnswer commentAnswer;
+
 	@Column(columnDefinition = "VARCHAR(255)", nullable = false)
 	private String content;
 
 	@Column(name = "is_passed", columnDefinition = "TINYINT(1)", nullable = false)
 	private Boolean isPassed;
 
-	@Column(name = "published_at", columnDefinition = "DATETIME", nullable = false)
+	@Column(name = "published_at", columnDefinition = "DATETIME")
 	private LocalDateTime publishedAt;
 
 	@Builder.Default
@@ -74,6 +79,11 @@ public class CommentQuestion {
 
 	public void updateCommentAnswerCount(int commentAnswerCount) {
 		this.commentAnswerCount = commentAnswerCount;
+	}
+
+	public void updateCommentAnswer(CommentAnswer commentAnswer) {
+		this.commentAnswer = commentAnswer;
+		commentAnswer.updateCommentQuestion(this);
 	}
 
 }
