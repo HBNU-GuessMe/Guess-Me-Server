@@ -25,7 +25,7 @@ public class Chat {
 	private Long roomId;
 
 	@Field(name = "user_id")
-	private Long userId;
+	private Long userId = -1L;
 
 	@Field(name = "sender_type")
 	private String senderType;
