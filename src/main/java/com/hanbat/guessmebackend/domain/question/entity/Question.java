@@ -1,7 +1,10 @@
 package com.hanbat.guessmebackend.domain.question.entity;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
+import com.hanbat.guessmebackend.domain.comment.entity.CommentQuestion;
 import com.hanbat.guessmebackend.domain.common.model.BaseTimeEntity;
 import com.hanbat.guessmebackend.domain.family.entity.Family;
 
@@ -13,6 +16,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -51,8 +55,8 @@ public class Question extends BaseTimeEntity {
 	private int answerCount = 0;
 
 	@Builder.Default
-	@Column(name = "comment_count", columnDefinition = "INT(5)", nullable = false)
-	private int commentCount = 2;
+	@Column(name = "comment_question_count", columnDefinition = "INT(5)", nullable = false)
+	private int commentQuestionCount = 2;
 
 
 	private Question(Family family, String content, Boolean isPassed) {
@@ -71,6 +75,10 @@ public class Question extends BaseTimeEntity {
 
 	public void updateAnswerCount(int answerCount) {
 		this.answerCount = answerCount;
+	}
+
+	public void updateCommentQuestionCount(int commentQuestionCount) {
+		this.commentQuestionCount = commentQuestionCount;
 	}
 
 }
