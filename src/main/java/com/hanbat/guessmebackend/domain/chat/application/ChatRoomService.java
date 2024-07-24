@@ -48,7 +48,6 @@ public class ChatRoomService {
 			.build();
 
 		chatRoomRepository.save(chatroom);
-		eventPublisher.publishEvent(chatroom);
 
 
 		return chatroom;

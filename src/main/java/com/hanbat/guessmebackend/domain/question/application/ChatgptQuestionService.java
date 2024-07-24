@@ -50,44 +50,17 @@ public class ChatgptQuestionService {
 	/*
 		처음 생성) '질문 생성하러가기' 버튼누르면 가족 구성원들의 관심사, 고민거리 스트링으로 넘겨주면 관련 질문 5개 생성
 		후 생성) 질문 isPassed 상태가 되면 다시 이 API 요청 [추후 개발]
+	*/
 
+	/*
+		chatgpt api에 요청받은 response로 질문 생성
 	 */
-
 	@Transactional
 	public List<QuestionCreateResponse> createQuestion() throws JsonProcessingException {
 		final User user = memberUtil.getCurrentUser();
-
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.APPLICATION_JSON);
-		headers.set("Authorization","Bearer " + apiKey);
-
-		Map<String, Object> requestBody = new HashMap<>();
-		requestBody.put("model", "ft:gpt-3.5-turbo-1106:personal:aigueseme:9kl9IecO");
-		List<Map<String, Object>> messages = createRequest(user);
-
-		requestBody.put("messages", messages);
-		requestBody.put("temperature", 0.6);
-		requestBody.put("max_tokens", 700);
-
-		HttpEntity<Map<String, Object>> request = new HttpEntity<>(requestBody, headers);
-		RestTemplate restTemplate = new RestTemplate();
-		ResponseEntity<Map> response = restTemplate.postForEntity(ENDPOINT, request, Map.class);
-
-		// response 파싱
-		Map<String, Object> body = response.getBody();
-		ObjectMapper mapper = new ObjectMapper();
-		JsonNode node = mapper.convertValue(body, JsonNode.class);
-		log.info(node.toString());
-		JsonNode message = node.get("choices").get(0).get("message");
-		String content = message.get("content").asText();
-		log.info(content);
-
-		JsonNode rootNode = mapper.readTree(content);
-		log.info(rootNode.toString());
-
+		JsonNode rootNode = responseJSONFromChatgptApi(createRequest());
 		JsonNode jsonQuestions = rootNode.get("questions");
 		log.info(jsonQuestions.toString());
-
 
 		List<QuestionCreateResponse> questions = new ArrayList<>();
 		for (JsonNode jsonNode : jsonQuestions) {
@@ -108,12 +81,82 @@ public class ChatgptQuestionService {
 	}
 
 	/*
-		ChatGPT message param에 들어갈 request 생성
+		chatgptAPI 요청 : Response JSON
 	 */
-	private List<Map<String, Object>> createRequest (User user) {
+	public JsonNode responseJSONFromChatgptApi(List<Map<String, Object>> requestMessages) throws JsonProcessingException {
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.set("Authorization","Bearer " + apiKey);
+
+		Map<String, Object> requestBody = new HashMap<>();
+		requestBody.put("model", "ft:gpt-3.5-turbo-1106:personal:familyai:9logQYga");
+		List<Map<String, Object>> messages = requestMessages;
+
+		requestBody.put("messages", messages);
+		requestBody.put("temperature", 0.3);
+		requestBody.put("max_tokens", 700);
+
+		Map<String, Object> responseFormat = new HashMap<>();
+		responseFormat.put("type", "json_object");
+		requestBody.put("response_format", responseFormat);
+
+
+		HttpEntity<Map<String, Object>> request = new HttpEntity<>(requestBody, headers);
+		RestTemplate restTemplate = new RestTemplate();
+		ResponseEntity<Map> response = restTemplate.postForEntity(ENDPOINT, request, Map.class);
+
+		// response 파싱
+		Map<String, Object> body = response.getBody();
+		ObjectMapper mapper = new ObjectMapper();
+		JsonNode node = mapper.convertValue(body, JsonNode.class);
+		log.info(node.toString());
+		JsonNode message = node.get("choices").get(0).get("message");
+		String content = message.get("content").asText();
+		log.info(content);
+		JsonNode rootNode = mapper.readTree(content);
+		log.info(rootNode.toString());
+		return rootNode;
+
+	}
+
+	public String responseStringFromChatgptApi(List<Map<String, Object>> requestMessages) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		headers.set("Authorization","Bearer " + apiKey);
+
+		Map<String, Object> requestBody = new HashMap<>();
+		requestBody.put("model", "ft:gpt-3.5-turbo-1106:personal:familyai:9logQYga");
+		List<Map<String, Object>> messages = requestMessages;
+
+		requestBody.put("messages", messages);
+		requestBody.put("temperature", 0.1);
+		requestBody.put("max_tokens", 700);
+
+		HttpEntity<Map<String, Object>> request = new HttpEntity<>(requestBody, headers);
+		RestTemplate restTemplate = new RestTemplate();
+		ResponseEntity<Map> response = restTemplate.postForEntity(ENDPOINT, request, Map.class);
+
+		// response 파싱
+		Map<String, Object> body = response.getBody();
+		ObjectMapper mapper = new ObjectMapper();
+		JsonNode node = mapper.convertValue(body, JsonNode.class);
+		log.info(node.toString());
+		JsonNode message = node.get("choices").get(0).get("message");
+		String content = message.get("content").asText();
+		log.info(content);
+		return content;
+	}
+
+
+	/*
+		ChatGPT message param에 들어갈 request 생성: JSON
+	 */
+	public List<Map<String, Object>> createRequest () {
+		final User user = memberUtil.getCurrentUser();
+
 		Map<String, Object> message1 = new HashMap<>();
 		message1.put("role", "system");
-		message1.put("content", "당신은 가족 상담을 하기위한 전문의입니다.");
+		message1.put("content", "당신은 가족 상담을 하기위한 전문의입니다. 존댓말로 해야합니다.");
 
 		Map<String, Object> message2 = new HashMap<>();
 		message2.put("role", "user");
@@ -129,5 +172,8 @@ public class ChatgptQuestionService {
 		log.info(messages.toString());
 		return messages;
 	}
+
+
+
 
 }

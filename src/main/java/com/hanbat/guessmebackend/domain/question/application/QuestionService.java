@@ -71,7 +71,7 @@ public class QuestionService {
 					int count = question.getFamily().getCount();
 					log.info(String.valueOf(count));
 
-					if (question.getFamily().getCount() / 2 + 1 < answers.size()) {
+					if (question.getFamily().getCount() / 2 + 1 <= answers.size()) {
 						log.info("가족 과반수 이상 답변을 완료했습니다.");
 						question.updateIsPassed(true);
 					}
