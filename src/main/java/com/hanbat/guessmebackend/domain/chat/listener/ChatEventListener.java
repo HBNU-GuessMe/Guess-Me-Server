@@ -30,23 +30,6 @@ public class ChatEventListener {
 	private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
 
-	/*
-		댓글질문이 패스될 때마다 count를 감소시키고, count가 0이 될 때
-		채팅방 생성 후, 서버에서 메세지전송(해피)하는 이벤트 확인
-	 */
-	@EventListener
-	@Transactional
-	public void handleChatEvent(Long familyId) {
-		Chatroom chatroom = chatRoomService.createChatRoom(familyId);
-		String content = chatService.sendMessageByServer(chatroom.getId());
-
-		simpMessagingTemplate.convertAndSend(
-			"/sub/channel/" + chatroom.getId(), content
-		);
-
-		log.info("해피 속마음채팅 첫 메세지 전송 성공");
-	}
-
 
 	@EventListener
 	@Transactional

@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hanbat.guessmebackend.domain.chat.dto.ChatResponse;
@@ -25,6 +26,7 @@ import com.hanbat.guessmebackend.domain.chat.entity.Chat;
 import com.hanbat.guessmebackend.domain.chat.entity.Chatroom;
 import com.hanbat.guessmebackend.domain.chat.repository.ChatRoomRepository;
 import com.hanbat.guessmebackend.domain.chat.repository.mongo.ChatRepository;
+import com.hanbat.guessmebackend.domain.question.application.ChatgptQuestionService;
 import com.hanbat.guessmebackend.domain.user.entity.User;
 import com.hanbat.guessmebackend.global.error.exception.CustomException;
 import com.hanbat.guessmebackend.global.error.exception.ErrorCode;
@@ -48,6 +50,7 @@ public class ChatService {
 	private final ChatRoomRepository chatRoomRepository;
 	private final MemberUtil memberUtil;
 	private final SimpMessagingTemplate simpMessagingTemplate;
+	private final ChatgptQuestionService chatgptQuestionService;
 
 	/*
 		채팅을 mongodb에 저장
@@ -71,36 +74,13 @@ public class ChatService {
 		해피가 채팅방에 메세지 전송
 	 */
 	@Transactional
-	public String sendMessageByServer(Long roomId) {
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.APPLICATION_JSON);
-		headers.set("Authorization","Bearer " + apiKey);
-
-		Map<String, Object> requestBody = new HashMap<>();
-		requestBody.put("model", "ft:gpt-3.5-turbo-1106:personal:aigueseme:9kl9IecO");
-		List<Map<String, Object>> messages = createRequest();
-
-		requestBody.put("messages", messages);
-		requestBody.put("temperature", 0.6);
-		requestBody.put("max_tokens", 700);
-
-		HttpEntity<Map<String, Object>> request = new HttpEntity<>(requestBody, headers);
-		RestTemplate restTemplate = new RestTemplate();
-		ResponseEntity<Map> response = restTemplate.postForEntity(ENDPOINT, request, Map.class);
-
-		// response 파싱
-		Map<String, Object> body = response.getBody();
-		ObjectMapper mapper = new ObjectMapper();
-		JsonNode node = mapper.convertValue(body, JsonNode.class);
-		log.info(node.toString());
-		JsonNode message = node.get("choices").get(0).get("message");
-		String content = message.get("content").asText();
+	public String sendMessageByServer(Long roomId) throws JsonProcessingException {
+		String content = chatgptQuestionService.responseStringFromChatgptApi(createRequest());
 		log.info(content);
 
 		// chat에 저장
 		Chat chat = Chat.builder()
 			.roomId(roomId)
-			.userId(null)
 			.senderType("서버")
 			.content(content)
 			.sentAt(LocalDateTime.now())
@@ -124,7 +104,7 @@ public class ChatService {
 		);
 		Chatroom chatroom = chatRoomRepository.findById(roomId)
 			.orElseThrow(() -> new CustomException(ErrorCode.CHAT_ROOM_NOT_FOUND));
-		log.info("채팅 찾음");
+		log.info("채팅방 찾음");
 		chatroom.updateIsEnded(true);
 		log.info("업데이트 함");
 	}
