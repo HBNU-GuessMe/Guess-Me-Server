@@ -9,6 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,19 +20,20 @@ import lombok.NoArgsConstructor;
 public class CommentAnswer {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(columnDefinition = "BIGINT(11)")
+	@Column(name = "comment_answer_id", columnDefinition = "BIGINT(11)")
 	private Long id;
 
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "comment_question_id", nullable = false)
+	@OneToOne(fetch = FetchType.LAZY, mappedBy = "commentAnswer")
 	private CommentQuestion commentQuestion;
 
 	@Column(columnDefinition = "VARCHAR(255)", nullable = false)
 	private String content;
 
-	@Builder
-	public CommentAnswer(CommentQuestion commentQuestion, String content) {
-		this.commentQuestion = commentQuestion;
+	public CommentAnswer(String content) {
 		this.content = content;
+	}
+
+	public void updateCommentQuestion(CommentQuestion commentQuestion) {
+		this.commentQuestion = commentQuestion;
 	}
 }
