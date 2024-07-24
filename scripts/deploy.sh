@@ -11,7 +11,7 @@ fi
 TODAY=$(date +%Y-%m-%d)
 
 echo "deploy.sh 시작" | sudo tee -a $LOG_FILE
-sudo chmod 666 "$LOG_LOG_FILE"
+sudo chmod 666 "$LOG_FILE"
 
 cd $REPOSITORY || echo "repository 없음 $REPOSITORY" | sudo tee -a $LOG_FILE
 echo "현재 디렉토리: $REPOSITORY" | sudo tee -a $LOG_FILE
