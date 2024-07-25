@@ -35,8 +35,8 @@ echo "jar 이름 : $JAR_NAME" | sudo tee -a $LOG_FILE
 JAR_PATH=$REPOSITORY/$JAR_NAME
 
 if [ ! -f "$LOG_DIR/gussme-$TODAY.txt" ]; then
-    echo "로그 파일 없음 $LOG_DIR/guessme-$TODAY.txt, 파일 생성" | sudo tee -a $LOG_DIR/gussme-"$TODAY".txt
-    sudo chmod 666 $LOG_DIR/gussme-"$TODAY".txt
+    echo "로그 파일 없음 $LOG_DIR/guessme-$TODAY.txt, 파일 생성" | sudo tee -a $LOG_DIR/guessme-"$TODAY".txt
+    sudo chmod 666 $LOG_DIR/guessme-"$TODAY".txt
 fi
 
 # 실행

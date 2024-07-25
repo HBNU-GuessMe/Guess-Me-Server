@@ -23,4 +23,10 @@ public interface CommentQuestionRepository extends JpaRepository<CommentQuestion
 		"WHERE f.id = :familyId")
 	List<Object[]> findCommentQuestionsAndAnswersByFamilyId(@Param("familyId") Long familyId);
 
+	@Query("SELECT cq FROM CommentQuestion cq " +
+		"JOIN cq.question q " +
+		"WHERE q.id = :questionId AND cq.publishedAt IS NOT NULL AND cq.isPassed IS FALSE ")
+	List<CommentQuestion> findCommentQuestionAlreadyPublished(@Param("questionId") Long questionId);
+
+
 }
