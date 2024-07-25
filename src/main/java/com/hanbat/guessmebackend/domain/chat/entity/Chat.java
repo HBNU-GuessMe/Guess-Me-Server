@@ -13,7 +13,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Document(collation = "chat")
+@Document(collection = "chat")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Chat {
