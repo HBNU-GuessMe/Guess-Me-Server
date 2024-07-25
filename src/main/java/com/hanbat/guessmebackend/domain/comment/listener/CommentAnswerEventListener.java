@@ -1,5 +1,7 @@
 package com.hanbat.guessmebackend.domain.comment.listener;
 
+import java.util.List;
+
 import org.springframework.context.event.EventListener;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
@@ -37,8 +39,12 @@ public class CommentAnswerEventListener {
 		int familyCount = commentAnswer.getCommentQuestion().getQuestion().getFamily().getCount();
 		log.info(String.valueOf(commentAnswerCountSum));
 		log.info(String.valueOf(familyCount));
-		if (commentAnswerCountSum == familyCount && commentAnswerCountSum == familyCount * 2) {
-			commentAnswer.getCommentQuestion().updateIsPassed(true);
+
+		if (commentAnswerCountSum == familyCount || commentAnswerCountSum == familyCount * 2) {
+			List<CommentQuestion> commentQuestions = commentService.findCommentQuestionAlreadyPublished(question.getId());
+			for (CommentQuestion cq : commentQuestions) {
+				cq.updateIsPassed(true);
+			}
 			question.updateCommentQuestionCount(question.getCommentQuestionCount() - 1);
 		}
 
