@@ -54,7 +54,6 @@ public class CommentService {
 	@Transactional
 	public CommentRegisterResponse answerCommentQuestion(CommentRegisterRequest commentRegisterRequest) {
 
-
 		CommentQuestion commentQuestion = commentQuestionRepository.findById(commentRegisterRequest.getCommentQuestionId())
 			.orElseThrow(() -> new CustomException(ErrorCode.COMMENT_QUESTION_NOT_FOUND));
 
@@ -176,6 +175,10 @@ public class CommentService {
 	// 같은 질문이고, 같은 가족 구성원의 댓글 질문 답변 카운트 수 구하기
 	public Integer getSumOfCommentAnswerCountForSameFamily(Long questionId) {
 		return commentQuestionRepository.findSumOfCommentAnswerCount(questionId);
+	}
+
+	public List<CommentQuestion> findCommentQuestionAlreadyPublished(Long questionId) {
+		return commentQuestionRepository.findCommentQuestionAlreadyPublished(questionId);
 	}
 
 
