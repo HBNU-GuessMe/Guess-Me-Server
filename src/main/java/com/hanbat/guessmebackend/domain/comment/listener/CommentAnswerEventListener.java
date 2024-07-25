@@ -49,6 +49,17 @@ public class CommentAnswerEventListener {
 			String content = chatService.sendMessageByServer(chatroom.getId());
 
 			simpMessagingTemplate.convertAndSend(
+				"/topic/newChatroom", chatroom.getId()
+			);
+
+			// 이후에 클라이언트가 해당 roomId를 구독한 후 메시지를 받을 수 있도록 잠시 대기
+			try {
+				Thread.sleep(40000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+
+			simpMessagingTemplate.convertAndSend(
 				"/sub/channel/" + chatroom.getId(), content
 			);
 
