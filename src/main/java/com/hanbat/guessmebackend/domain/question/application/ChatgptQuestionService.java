@@ -93,7 +93,7 @@ public class ChatgptQuestionService {
 		List<Map<String, Object>> messages = requestMessages;
 
 		requestBody.put("messages", messages);
-		requestBody.put("temperature", 0.3);
+		requestBody.put("temperature", 0.5);
 		requestBody.put("max_tokens", 700);
 
 		Map<String, Object> responseFormat = new HashMap<>();
@@ -111,11 +111,11 @@ public class ChatgptQuestionService {
 		JsonNode node = mapper.convertValue(body, JsonNode.class);
 		log.info(node.toString());
 		JsonNode message = node.get("choices").get(0).get("message");
+		log.info(message.toString());
 		String content = message.get("content").asText();
-		log.info(content);
-		JsonNode rootNode = mapper.readTree(content);
-		log.info(rootNode.toString());
-		return rootNode;
+		JsonNode result = mapper.readTree(content);
+		log.info(result.toString());
+		return result;
 
 	}
 
@@ -129,7 +129,7 @@ public class ChatgptQuestionService {
 		List<Map<String, Object>> messages = requestMessages;
 
 		requestBody.put("messages", messages);
-		requestBody.put("temperature", 0.1);
+		requestBody.put("temperature", 0.6);
 		requestBody.put("max_tokens", 700);
 
 		HttpEntity<Map<String, Object>> request = new HttpEntity<>(requestBody, headers);
@@ -156,14 +156,14 @@ public class ChatgptQuestionService {
 
 		Map<String, Object> message1 = new HashMap<>();
 		message1.put("role", "system");
-		message1.put("content", "당신은 가족 상담을 하기위한 전문의입니다. 존댓말로 해야합니다.");
+		message1.put("content", "당신은 가족 상담을 하기위한 전문의입니다.");
 
 		Map<String, Object> message2 = new HashMap<>();
 		message2.put("role", "user");
 		message2.put("content", user.getNickname() + "는 " + user.getInterest() + "에 관심을 가지고 있어. 그리고, "
 			+ user.getWorry() + "(이) 현재 걱정거리야. " + user.getNickname() +
-			"에게 주어진 관심사와 걱정거리를 바탕으로 가족 상담 전문의가 상담할 때 질문해주는 것처럼 각 질문마다 이름을 포함해서 질문을 구체적이고, 자세하게 5개 만들어줘. "
-			+ "이때 출력형식은 json 형식인데, rootnode는 questions이고, key는 id와 questionContent야. ```json을 제외하고 출력해줘.");
+			"에게 주어진 관심사와 걱정거리를 바탕으로 상담 질문을 5개 만들어줘."
+			+ "이때 출력형식은 반드시 JSON 문자열이 아니라 형식 맞춰서 출력해줘. rootnode는 questions이고, key는 id와 questionContent야. ");
 
 		List<Map<String, Object>> messages = new ArrayList<>();
 		messages.add(message1);

@@ -26,6 +26,8 @@ import com.hanbat.guessmebackend.domain.chat.entity.Chat;
 import com.hanbat.guessmebackend.domain.chat.entity.Chatroom;
 import com.hanbat.guessmebackend.domain.chat.repository.ChatRoomRepository;
 import com.hanbat.guessmebackend.domain.chat.repository.mongo.ChatRepository;
+import com.hanbat.guessmebackend.domain.comment.application.CommentService;
+import com.hanbat.guessmebackend.domain.comment.dto.CommentsByFamilyGetResponse;
 import com.hanbat.guessmebackend.domain.question.application.ChatgptQuestionService;
 import com.hanbat.guessmebackend.domain.user.entity.User;
 import com.hanbat.guessmebackend.global.error.exception.CustomException;
@@ -51,6 +53,7 @@ public class ChatService {
 	private final MemberUtil memberUtil;
 	private final SimpMessagingTemplate simpMessagingTemplate;
 	private final ChatgptQuestionService chatgptQuestionService;
+	private final CommentService commentService;
 
 	/*
 		채팅을 mongodb에 저장
@@ -110,13 +113,18 @@ public class ChatService {
 	}
 
 	private List<Map<String, Object>> createRequest () {
+		final User user = memberUtil.getCurrentUser();
+		Long familyId = user.getFamily().getId();
+		ObjectMapper mapper = new ObjectMapper();
 		Map<String, Object> message1 = new HashMap<>();
 		message1.put("role", "system");
 		message1.put("content", "당신은 가족 상담을 하기위한 전문의입니다.");
 
 		Map<String, Object> message2 = new HashMap<>();
 		message2.put("role", "user");
-		message2.put("content", "수현이는 예술을 하고싶고, 꿈을 이루고싶어해. 부모님은 그 꿈이 불안정하다고 생각해. 가족상담을 위한 전문의로써 위 내용을 바탕으로 상담을 이어갈 질문 1개를 구체적으로 생성해줘.");
+		List<CommentsByFamilyGetResponse> responses = commentService.getAllCommentsByFamily(familyId);
+		JsonNode jsonResponses = mapper.convertValue(responses, JsonNode.class);
+		message2.put("content", jsonResponses + "가족상담을 위한 전문의로써 위 json 파일을 바탕으로 상담을 이어갈 질문 1개를 구체적으로 생성해줘.");
 
 		List<Map<String, Object>> messages = new ArrayList<>();
 		messages.add(message1);

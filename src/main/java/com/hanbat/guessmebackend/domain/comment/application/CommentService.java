@@ -123,7 +123,7 @@ public class CommentService {
 				.userId(commentQuestion.getUser().getId())
 				.userName(commentQuestion.getUser().getNickname())
 				.commentQuestionContent(commentQuestion.getContent())
-				.commentAnswerContent(commentAnswer.getContent())
+				.commentAnswerContent(commentAnswer.getContent() )
 				.build();
 
 			return response;
@@ -139,9 +139,9 @@ public class CommentService {
 		JsonNode jsonData = rootNode.get("data");
 		log.info(jsonData.toString());
 
-		String questionId = jsonData.get("questionId").asText();
-		log.info(questionId);
-		Question question = questionRepository.findById(Long.parseLong(questionId))
+		Long questionId = jsonData.get("questionId").asLong();
+		log.info(questionId.toString());
+		Question question = questionRepository.findById(questionId)
 			.orElseThrow(() -> new CustomException(ErrorCode.QUESTION_NOT_FOUND));
 
 		JsonNode jsonQuestions = jsonData.get("commentQuestions");
@@ -150,10 +150,10 @@ public class CommentService {
 		for (JsonNode jsonNode : jsonQuestions) {
 			log.info(jsonNode.toString());
 
-			String userId = jsonNode.get("userId").asText();
-			User user = userRepository.findById(Long.parseLong(userId))
+			Long userId = jsonNode.get("userId").asLong();
+			User user = userRepository.findById(userId)
 				.orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
-			log.info(userId);
+			log.info(userId.toString());
 
 			String questionContent = jsonNode.get("questionContent").asText();
 			log.info(questionContent);
