@@ -35,14 +35,23 @@ jobs:
       - name: Make application.yml
         run: |
           mkdir -p src/main/resources
-          echo "${{ secrets.APPLICATION_YML }}" > src/main/resources/application.yml
+          echo "${{ secrets.APPLICATION }}" > src/main/resources/application.yml
+          echo "${{ secrets.APPLICATION_COMMON }}" > src/main/resources/application-common.yml
+          echo "${{ secrets.APPLICATION_LOCAL }}" > src/main/resources/application-local.yml
+          echo "${{ secrets.APPLICATION_PROD }}" > src/main/resources/application-prod.yml
           find src
           
           # 등록해둔 Github Secrets의 내용을 이용해서 yml 파일의 내용을 써줍니다.
           echo "$APPLICATION" > ./application.yml
+          echo "$APPLICATION_COMMON" > ./application-common.yml
+          echo "$APPLICATION_LOCAL" > ./application-local.yml
+          echo "$APPLICATION_PROD" > ./application-prod.yml
 
         env:
           APPLICATION: ${{ secrets.APPLICATION }}
+          APPLICATION_COMMON: ${{ secrets.APPLICATION_COMMON }}
+          APPLICATION_LOCAL: ${{ secrets.APPLICATION_LOCAL }}
+          APPLICATION_PROD: ${{ secrets.APPLICATION_PROD }}
 
         shell: bash
 
@@ -57,6 +66,9 @@ jobs:
         run: |
           mkdir deploy
           cp ./application.yml ./deploy/
+          cp ./application-common.yml ./deploy/
+          cp ./application-local.yml ./deploy/
+          cp ./application-prod.yml ./deploy/
           cp ./appspec.yml ./deploy/
           cp ./scripts/*.sh ./deploy/
           cp ./build/libs/*.jar ./deploy/

@@ -37,10 +37,16 @@ jobs:
       - name: Make application.yml
         run: |
           mkdir -p src/main/resources
-          echo "${{ secrets.APPLICATION_YML }}" > src/main/resources/application.yml
+          echo "${{ secrets.APPLICATION }}" > src/main/resources/application.yml
+          echo "${{ secrets.APPLICATION_COMMON }}" > src/main/resources/application-common.yml
+          echo "${{ secrets.APPLICATION_LOCAL }}" > src/main/resources/application-local.yml
+          echo "${{ secrets.APPLICATION_PROD }}" > src/main/resources/application-prod.yml
           find src
         env:
           APPLICATION: ${{ secrets.APPLICATION }}
+          APPLICATION_COMMON: ${{ secrets.APPLICATION_COMMON }}
+          APPLICATION_LOCAL: ${{ secrets.APPLICATION_LOCAL }}
+          APPLICATION_PROD: ${{ secrets.APPLICATION_PROD }}
         shell: bash
 
       - name: Gradle 권한 부여
