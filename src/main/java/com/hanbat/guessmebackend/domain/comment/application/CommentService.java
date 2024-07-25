@@ -57,6 +57,9 @@ public class CommentService {
 		CommentQuestion commentQuestion = commentQuestionRepository.findById(commentRegisterRequest.getCommentQuestionId())
 			.orElseThrow(() -> new CustomException(ErrorCode.COMMENT_QUESTION_NOT_FOUND));
 
+		if (commentQuestion.getPublishedAt() == null) {
+			throw new CustomException(ErrorCode.COMMENT_QUESTION_NOT_PUBLISHED_YET);
+		}
 		final User user = memberUtil.getCurrentUser();
 		if (!user.getId().equals(commentQuestion.getUser().getId())) {
 			throw new CustomException(ErrorCode.COMMENT_QUESTION_NOT_OWNER);
