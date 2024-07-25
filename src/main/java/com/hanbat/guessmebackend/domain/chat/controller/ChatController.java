@@ -32,8 +32,11 @@ public class ChatController {
 		sendingOperations.convertAndSend(
 			"/sub/channel/" + roomId, message
 		);
-
 		log.info("메세지 전송 성공");
+
+		chatService.createChat(message);
+
+		log.info("메세지 저장 성공");
 	}
 
 
