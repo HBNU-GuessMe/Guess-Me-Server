@@ -51,6 +51,7 @@ public enum ErrorCode {
 
 	// CommentQuestion
 	COMMENT_QUESTION_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 댓글 질문을 찾을 수 없습니다."),
+	COMMENT_QUESTION_NOT_OWNER(HttpStatus.BAD_REQUEST, "해당 댓글 질문의 소유자가 아니므로 답변할 수 없습니다."),
 
 	// Chat
 	CHAT_ROOM_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 채팅방을 찾을 수 없습니다.");
