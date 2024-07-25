@@ -59,9 +59,9 @@ public class QuestionEventListener {
 		AnswerGetAllResponse answerGetAllResponse = answerService.getAllAnswers(question.getId());
 		ObjectMapper objectMapper = new ObjectMapper();
 		JsonNode jsonNode = objectMapper.valueToTree(answerGetAllResponse);
-		message2.put("content", jsonNode + "이 json 파일에서 각 userId가 대답한 내용을 바탕으로 새로운 질문을 2개 만들어줘. "
-			+ "반드시 각 userId마다 질문을 2개씩 생성해줘" + "rootnode는 data이고, key는 questionId와 commentQuestions가 있어. "
-			+ "commentQuestions 안에 id와 userId, userName, questionContent가 있어. questionId와 commentQuestions은 앞에서 한번만 나와. 이 JSON 형식을 맞춰줘");
+		message2.put("content", jsonNode + "이 json 파일에서 각 userId가 대답한 내용을 바탕으로 제 3자의 입장, 상담가로써 새로운 질문을 2개 만들어줘. "
+			+ "반드시 각 userId마다 질문을 2개씩 생성해줘" + "rootnode는 data이고, key는 questionId와 commentQuestions가 있어.  commentQuestions 안에 id와 userId, userName, questionContent가 있어. "
+			+ "{data : {questionId, commentQuestions : [{id, userId, userName, questionContent}, ..]} 다음과 같은 형식이야. questionId와 commentQuestions은 앞에서 한번만 나와. 이 JSON 형식을 맞춰줘");
 
 
 		List<Map<String, Object>> messages = new ArrayList<>();
